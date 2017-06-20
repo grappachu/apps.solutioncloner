@@ -1,0 +1,33 @@
+﻿<Window x:Class="Grappachu.SolutionCloner.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:logViewer="clr-namespace:Grappachu.SolutionCloner.UI.LogViewer"
+        mc:Ignorable="d"
+        Title="Grappachu Solution Cloner" Height="500" Width="480" Loaded="MainWindow_OnLoaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="240" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Border BorderThickness="0" Margin="5"  Width="400" Height="210" BorderBrush="Transparent" Grid.Row="0" >
+            <StackPanel  >
+                <TextBlock>Source Folder</TextBlock>
+                <TextBox x:Name="TxtSource" Text="C:\Users\grapp\Desktop\Interop.Template" Margin="5" />
+                <TextBlock>Target Folder</TextBlock>
+                <TextBox x:Name="TxtTarget" Text="C:\Users\grapp\Desktop\Interop.Template.2" Margin="5" />
+                <TextBlock>Original Name</TextBlock>
+                <TextBox x:Name="TxtOriginalKey" Text="Grappachu.Core" Margin="5" />
+                <TextBlock>New Name</TextBlock>
+                <TextBox x:Name="TxtNewKey" Text="My.Cloned.Project" Margin="5" />
+
+                <Button x:Name="BtnClone" Margin="5" Click="BtnClone_Click">Clone</Button>
+            </StackPanel>
+        </Border>
+
+        <Border BorderThickness="1" BorderBrush="CornflowerBlue" Grid.Row="1" Margin="5">
+            <logViewer:LogViewer x:Name="LogViewer" Margin="0"  />
+        </Border>
+    </Grid>
+</Window>
