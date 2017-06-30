@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="Grappachu.SolutionCloner.UI.PathSelector.PathSelector"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d"
+             Loaded="PathSelector_OnLoaded">
+    <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Button x:Name="BtnBrowse" MinWidth="27" Visibility="Visible" DockPanel.Dock="Right" Content="..."
+                Click="BrowseButton_Click"></Button>
+        <xctk:WatermarkTextBox x:Name="TxtPath"
+                               TouchDown="TxtPath_OnTouchDown"
+                               MouseDoubleClick="WatermarkTextBox_MouseDoubleClick"
+                               PreviewMouseDown="WatermarkTextBox_OnMouseLeftButtonDown">
+            <xctk:WatermarkTextBox.Watermark>
+                <StackPanel Orientation="Horizontal">
+                    <Image x:Name="ImgIcon" Stretch="Uniform"  />
+                    <TextBlock x:Name="TxtWatermark" Text="Choose path" Margin="0 "  />
+                </StackPanel>
+            </xctk:WatermarkTextBox.Watermark>
+        </xctk:WatermarkTextBox>
+    </DockPanel>
+</UserControl>

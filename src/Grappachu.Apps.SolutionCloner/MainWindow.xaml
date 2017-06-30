@@ -4,6 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:logViewer="clr-namespace:Grappachu.SolutionCloner.UI.LogViewer"
+        xmlns:pathSelector="clr-namespace:Grappachu.SolutionCloner.UI.PathSelector"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Title="Grappachu Solution Cloner" Height="500" Width="480" Loaded="MainWindow_OnLoaded">
     <Grid>
@@ -14,14 +16,17 @@
         <Border BorderThickness="0" Margin="5"  Width="400" Height="210" BorderBrush="Transparent" Grid.Row="0" >
             <StackPanel  >
                 <TextBlock>Source Folder</TextBlock>
-                <TextBox x:Name="TxtSource" Text="C:\Users\grapp\Desktop\Interop.Template" Margin="5" />
+                <pathSelector:PathSelector x:Name="TxtSource" DirectoryMode="True"  Margin="10,0"  HorizontalAlignment="Stretch" 
+                                           BrowseButtonVisible="True" 
+                                           WatermarkText="Choose a folder to clone from..." />
                 <TextBlock>Target Folder</TextBlock>
-                <TextBox x:Name="TxtTarget" Text="C:\Users\grapp\Desktop\Interop.Template.2" Margin="5" />
+                <pathSelector:PathSelector x:Name="TxtTarget" DirectoryMode="True"  Margin="10,0" HorizontalAlignment="Stretch" 
+                                             BrowseButtonVisible="True" 
+                                           WatermarkText="Choose where to save cloned files..." />
                 <TextBlock>Original Name</TextBlock>
-                <TextBox x:Name="TxtOriginalKey" Text="Grappachu.Core" Margin="5" />
+                <xctk:WatermarkTextBox x:Name="TxtOriginalKey" Watermark="Old.Namespace.Here" Margin="5" />
                 <TextBlock>New Name</TextBlock>
-                <TextBox x:Name="TxtNewKey" Text="My.Cloned.Project" Margin="5" />
-
+                <xctk:WatermarkTextBox x:Name="TxtNewKey" Watermark="New.Namespaace.Here" Margin="5" />
                 <Button x:Name="BtnClone" Margin="5" Click="BtnClone_Click">Clone</Button>
             </StackPanel>
         </Border>

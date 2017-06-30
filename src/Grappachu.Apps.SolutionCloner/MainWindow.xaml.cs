@@ -13,7 +13,7 @@ namespace Grappachu.SolutionCloner
     /// <summary>
     ///     Logica di interazione per MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {
@@ -39,8 +39,8 @@ namespace Grappachu.SolutionCloner
                 var builder = new Engine.SolutionCloner(new CloneSettingsValidator(), new UpdaterFactory<IFileUpdater>());
                 var pars = new CloneSettings
                 {
-                    TemplateSource = new DirectoryInfo(TxtSource.Text),
-                    TargetFolder = new DirectoryInfo(TxtTarget.Text),
+                    TemplateSource = new DirectoryInfo(TxtSource.SelectedValue),
+                    TargetFolder = new DirectoryInfo(TxtTarget.SelectedValue),
                     TemplateKey = TxtOriginalKey.Text,
                     TargetKey = TxtNewKey.Text
                 };
@@ -66,28 +66,4 @@ namespace Grappachu.SolutionCloner
             }
         }
     }
-
-    //internal class AbsurumDateConverter
-    //{
-    //    private readonly int _startYear;
-
-    //    public AbsurumDateConverter(int startYear = 1900)
-    //    {
-    //        _startYear = startYear;
-    //    }
-
-    //    public DateTime Parse(decimal date)
-    //    {
-    //        var y = (int) (date / 1000 + _startYear);
-    //        var d = date % 100;
-
-
-    //        return new DateTime(y, 1, 1).AddDays((double) (d - 1));
-    //    }
-
-    //    public decimal UnParse(DateTime date)
-    //    {
-    //        return (date.Year - _startYear) * 1000 + date.DayOfYear;
-    //    }
-    //}
 }
