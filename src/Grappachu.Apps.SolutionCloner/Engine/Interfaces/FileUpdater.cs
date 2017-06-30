@@ -29,7 +29,7 @@ namespace Grappachu.SolutionCloner.Engine.Interfaces
 
         private bool ShouldUpdate(FileInfo file, CloneSettings pars)
         {
-            var fnames = pars.ReplaceFiles;
+            var fnames = pars.CloneProfile.ReplaceFiles;
             return fnames.Any(f => file.FullName.EndsWith(f, StringComparison.OrdinalIgnoreCase));
         }
 

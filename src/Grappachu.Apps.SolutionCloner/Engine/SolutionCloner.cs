@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using Grappachu.Core.Preview.IO;
 using Grappachu.SolutionCloner.Engine.Components;
 using Grappachu.SolutionCloner.Engine.Interfaces;
@@ -64,12 +65,19 @@ namespace Grappachu.SolutionCloner.Engine
             var allFiles = cloneSettings.TargetFolder.GetFiles("*", SearchOption.AllDirectories).ToArray();
             foreach (var file in allFiles)
             {
-                var updater = _updaterFactory.CreateUpdater(file, cloneSettings);
-                if (updater != null)
+                try
                 {
-                    var relativePath = AsRelative(cloneSettings, file);
-                    updater.Update(file);
-                    Log.DebugFormat("Updated: {0}", relativePath);
+                    var updater = _updaterFactory.CreateUpdater(file, cloneSettings);
+                    if (updater != null)
+                    {
+                        var relativePath = AsRelative(cloneSettings, file);
+                        updater.Update(file);
+                        Log.DebugFormat("Updated: {0}", relativePath);
+                    }
+                }
+                catch (UnauthorizedAccessException uaex)
+                {
+                    Log.WarnFormat("Cannot delete: {0} [{1}]", file, uaex.Message);
                 }
             }
         }
@@ -90,12 +98,21 @@ namespace Grappachu.SolutionCloner.Engine
         {
             var allFiles = cloneSettings.TargetFolder.GetFiles("*", SearchOption.AllDirectories).ToArray();
             foreach (var file in allFiles)
-                if (ShouldDelete(file, cloneSettings))
+            {
+                try
                 {
-                    var relativePath = AsRelative(cloneSettings, file);
-                    file.Delete();
-                    Log.DebugFormat("Deleted: {0}", relativePath);
+                    if (ShouldDelete(file, cloneSettings))
+                    {
+                        var relativePath = AsRelative(cloneSettings, file);
+                        file.Delete();
+                        Log.DebugFormat("Deleted: {0}", relativePath);
+                    }
                 }
+                catch (UnauthorizedAccessException uaex)
+                {
+                    Log.WarnFormat("Cannot delete: {0} [{1}]", file, uaex.Message);
+                }
+            }
         }
 
 
@@ -126,15 +143,11 @@ namespace Grappachu.SolutionCloner.Engine
         }
 
 
-        private bool ShouldDelete(FileInfo file, CloneSettings pars)
+        private static bool ShouldDelete(FileInfo file, CloneSettings pars)
         {
-            if (file.FullName.Contains("\\bin\\"))
-                return true;
-            if (file.FullName.Contains("\\obj\\"))
-                return true;
-
-            var fnames = new[] {".suo", ".DotSettings", ".pdb"};
-            return fnames.Any(f => file.FullName.EndsWith(f, StringComparison.OrdinalIgnoreCase));
+            var fpath = file.FullName.ToLowerInvariant();
+            return pars.CloneProfile.ExcludeFolders.Any(f => fpath.Contains(f.ToLowerInvariant()))
+                || pars.CloneProfile.DeleteFiles.Any(f => fpath.EndsWith(f, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

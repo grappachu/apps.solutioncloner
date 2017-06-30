@@ -21,6 +21,7 @@ namespace Grappachu.SolutionCloner.UI.PathSelector
         private bool _directoryMode;
         private string _fileFilter;
         private string _value;
+        private string _initialDirectory;
 
         /// <summary>
         /// 
@@ -143,9 +144,33 @@ namespace Grappachu.SolutionCloner.UI.PathSelector
             {
                 _value = value;
                 TxtPath.Text = _value;
+                if (_value != null)
+                {
+                    _initialDirectory = _value;
+                }
                 OnPropertyChanged(nameof(SelectedValue));
             }
         }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        [Browsable(true)]
+        [Category("Common")]
+        public string InitialDirectory
+        {
+            get
+            {
+                return _initialDirectory;
+            }
+            set
+            {
+                _initialDirectory = value; 
+                OnPropertyChanged(nameof(InitialDirectory));
+            }
+        }
+
 
         /// <summary>
         /// 
@@ -222,11 +247,11 @@ namespace Grappachu.SolutionCloner.UI.PathSelector
             {
                 return Directory.Exists(SelectedValue)
                     ? SelectedValue
-                    : Directory.GetCurrentDirectory();
+                    : InitialDirectory;
             }
 
             var root = string.IsNullOrEmpty(SelectedValue)
-                ? Directory.GetCurrentDirectory()
+                ? InitialDirectory
                 : Path.GetDirectoryName(SelectedValue) ?? string.Empty;
             return Directory.Exists(root)
                 ? root

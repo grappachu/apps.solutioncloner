@@ -7,18 +7,7 @@ namespace Grappachu.SolutionCloner.Engine.Model
     {
         public CloneSettings()
         {
-            ReplaceFiles = new List<string>(new[]
-            {
-                ".sln",
-                ".csproj",
-                ".cs",
-                ".config",
-                ".resx",
-                ".md",
-                ".gitignore",
-                ".nuspec",
-                ".xml"
-            });
+            CloneProfile = new CloneProfile();
         }
 
         public DirectoryInfo TargetFolder { get; set; }
@@ -28,6 +17,6 @@ namespace Grappachu.SolutionCloner.Engine.Model
 
         public string TargetKey { get; set; }
 
-        public IList<string> ReplaceFiles { get; }
+        public CloneProfile CloneProfile { get; }
     }
 }
