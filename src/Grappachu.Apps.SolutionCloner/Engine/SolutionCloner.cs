@@ -118,19 +118,31 @@ namespace Grappachu.SolutionCloner.Engine
 
         private void RenameDirectories(CloneSettings builderParams, DirectoryInfo root)
         {
-            var dirs = root.GetDirectories("*").ToArray();
-            foreach (var dir in dirs)
+            try
             {
-                var renamedRoot = Rename(dir, builderParams);
-
-                RenameDirectories(builderParams, new DirectoryInfo(renamedRoot));
+                var dirs = root.GetDirectories("*").ToArray();
+                foreach (var dir in dirs)
+                {
+                    var renamedRoot = Rename(dir, builderParams);
+                    RenameDirectories(builderParams, new DirectoryInfo(renamedRoot));
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.DebugFormat(root.FullName);
+                throw;
             }
         }
 
 
         private string Rename(DirectoryInfo dir, CloneSettings pars)
         {
-            var updatedName = dir.FullName.Replace(pars.TemplateKey, pars.TargetKey);
+            // Gets the new name dir preserving destination root path
+            var src = pars.TargetFolder.FullName;
+            var tmp = dir.FullName.Replace(src, string.Empty);
+            var ren = tmp.Replace(pars.TemplateKey, pars.TargetKey);
+            var updatedName = src + ren;
+
             if (dir.FullName != updatedName)
             {
                 var srcDir = dir.FullName;
