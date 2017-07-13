@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Deployment.Application;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
@@ -70,9 +72,9 @@ namespace Grappachu.SolutionCloner
                     TargetKey = TxtNewKey.Text
                 };
 
-                pars.CloneProfile.DeleteFiles = EditorDeleteFiles.Text.Split();
-                pars.CloneProfile.ExcludeFolders = EditorExcludeFolders.Text.Split();
-                pars.CloneProfile.ReplaceFiles = EditorReplaceFiles.Text.Split();
+                pars.CloneProfile.DeleteFiles = Parse(EditorDeleteFiles.Text);
+                pars.CloneProfile.ExcludeFolders = Parse(EditorExcludeFolders.Text);
+                pars.CloneProfile.ReplaceFiles = Parse(EditorReplaceFiles.Text);
 
                 TabLog.IsSelected = true;
 
@@ -87,6 +89,11 @@ namespace Grappachu.SolutionCloner
             {
                 Dialogs.ShowError(ex);
             } 
+        }
+
+        private static IList<string> Parse(string text)
+        {
+            return text.Split().Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
         }
     }
 }
