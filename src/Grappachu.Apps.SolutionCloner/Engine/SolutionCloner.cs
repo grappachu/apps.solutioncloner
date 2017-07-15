@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using Grappachu.Core.Preview.IO;
 using Grappachu.SolutionCloner.Engine.Components;
 using Grappachu.SolutionCloner.Engine.Interfaces;
@@ -117,21 +116,13 @@ namespace Grappachu.SolutionCloner.Engine
 
 
         private void RenameDirectories(CloneSettings builderParams, DirectoryInfo root)
-        {
-            try
+        { 
+            var dirs = root.GetDirectories("*").ToArray();
+            foreach (var dir in dirs)
             {
-                var dirs = root.GetDirectories("*").ToArray();
-                foreach (var dir in dirs)
-                {
-                    var renamedRoot = Rename(dir, builderParams);
-                    RenameDirectories(builderParams, new DirectoryInfo(renamedRoot));
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.DebugFormat(root.FullName);
-                throw;
-            }
+                var renamedRoot = Rename(dir, builderParams);
+                RenameDirectories(builderParams, new DirectoryInfo(renamedRoot));
+            } 
         }
 
 

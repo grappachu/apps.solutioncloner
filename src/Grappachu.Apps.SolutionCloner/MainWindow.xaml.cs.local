@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Deployment.Application;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 using Grappachu.Core.Lang.Extensions;
 using Grappachu.Core.Preview.UI;
 using Grappachu.SolutionCloner.Engine.Components;
-using Grappachu.SolutionCloner.Engine.Interfaces;
 using Grappachu.SolutionCloner.Engine.Model;
 using Grappachu.SolutionCloner.Properties;
 using log4net.Core;
@@ -74,20 +71,14 @@ namespace Grappachu.SolutionCloner
                     TargetKey = TxtNewKey.Text
                 };
 
-                pars.CloneProfile.DeleteFiles = Parse(EditorDeleteFiles.Text);
-                pars.CloneProfile.ExcludeFolders = Parse(EditorExcludeFolders.Text);
-                pars.CloneProfile.ReplaceFiles = Parse(EditorReplaceFiles.Text);
+                var splitters = new[] {Environment.NewLine, ",", ";", "\r", "\n"};
+                pars.CloneProfile.DeleteFiles = EditorDeleteFiles.Text.Split(splitters, StringSplitOptions.RemoveEmptyEntries);
+                pars.CloneProfile.ExcludeFolders = EditorExcludeFolders.Text.Split(splitters, StringSplitOptions.RemoveEmptyEntries);
+                pars.CloneProfile.ReplaceFiles = EditorReplaceFiles.Text.Split(splitters, StringSplitOptions.RemoveEmptyEntries);
 
                 TabLog.IsSelected = true;
 
-                SetWaiting(true);
-                new TaskFactory()
-                    .StartNew(() => builder.Clone(pars))
-                    .ContinueWith(t =>
-                    {
-                        Dispatcher.BeginInvoke(new Action(() => { SetWaiting(false); }));
-                    });
-
+                new TaskFactory().StartNew(() => builder.Clone(pars));
                 // Dispatcher.BeginInvoke(new Action(() => { builder.Clone(pars); }));
 
                 Settings.Default.LastSourcePath = pars.TemplateSource.Parent?.FullName;
@@ -97,29 +88,7 @@ namespace Grappachu.SolutionCloner
             catch (Exception ex)
             {
                 Dialogs.ShowError(ex);
-            }
-        }
-
-        private void SetWaiting(bool waiting)
-        {
-            if (waiting)
-            {
-                Mouse.OverrideCursor = Cursors.Wait;
-                BtnClone.IsEnabled = false;
-                PrgWait.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                PrgWait.Visibility = Visibility.Hidden;
-                BtnClone.IsEnabled = true;
-                Mouse.OverrideCursor = null;
-            }
-        }
-
-
-        private static IList<string> Parse(string text)
-        {
-            return text.Split().Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+            } 
         }
     }
 }

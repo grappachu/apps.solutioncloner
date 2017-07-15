@@ -139,7 +139,14 @@ namespace Grappachu.SolutionCloner.UI.PathSelector
         [Category("Common")]
         public string SelectedValue
         {
-            get { return _value; }
+            get
+            {
+                if (IsManuallyEditable)
+                {
+                    return TxtPath.Text;
+                }
+                return _value;
+            }
             set
             {
                 _value = value;

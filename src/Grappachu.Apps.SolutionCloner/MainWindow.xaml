@@ -7,7 +7,7 @@
         xmlns:pathSelector="clr-namespace:Grappachu.SolutionCloner.UI.PathSelector"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
-        Title="Grappachu Solution Cloner" Height="640" Width="480" Loaded="MainWindow_OnLoaded">
+        Title="Grappachu Solution Cloner" Height="640" Width="640" Loaded="MainWindow_OnLoaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="240" />
@@ -27,6 +27,7 @@
                 <xctk:WatermarkTextBox x:Name="TxtOriginalKey" Watermark="Old.Namespace.Here" Margin="5" />
                 <TextBlock>New Name</TextBlock>
                 <xctk:WatermarkTextBox x:Name="TxtNewKey" Watermark="New.Namespaace.Here" Margin="5" />
+                <ProgressBar x:Name="PrgWait" IsIndeterminate="True" Margin="5,0,5,0" Height="10" Visibility="Hidden" ></ProgressBar>
                 <Button x:Name="BtnClone" Margin="5" Click="BtnClone_Click">Clone</Button>
             </StackPanel>
         </Border>

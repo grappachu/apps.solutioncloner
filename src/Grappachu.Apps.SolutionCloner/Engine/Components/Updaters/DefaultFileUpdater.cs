@@ -1,18 +1,18 @@
 using System;
 using System.IO;
 using System.Linq;
-using Grappachu.SolutionCloner.Engine.Components;
+using Grappachu.SolutionCloner.Engine.Interfaces;
 using Grappachu.SolutionCloner.Engine.Model;
 using log4net;
 
-namespace Grappachu.SolutionCloner.Engine.Interfaces
+namespace Grappachu.SolutionCloner.Engine.Components.Updaters
 {
-    internal class FileUpdater : IFileUpdater
+    internal class DefaultFileUpdater : IFileUpdater
     {
-        private static readonly ILog Log = LogManager.GetLogger(typeof(FileUpdater));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(DefaultFileUpdater));
         private readonly CloneSettings _settings;
 
-        public FileUpdater(CloneSettings settings)
+        public DefaultFileUpdater(CloneSettings settings)
         {
             _settings = settings;
         }

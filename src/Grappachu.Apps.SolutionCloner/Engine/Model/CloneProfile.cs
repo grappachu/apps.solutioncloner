@@ -18,6 +18,8 @@ namespace Grappachu.SolutionCloner.Engine.Model
                 ".nuspec",
                 ".xml",
                 ".aspx",
+                ".ashx",
+                ".asax",
                 ".xaml",
                 ".vb",
                 ".vbproj",
@@ -35,7 +37,8 @@ namespace Grappachu.SolutionCloner.Engine.Model
             ExcludeFolders = new List<string>(new[]
             {
                 "\\bin\\",
-                "\\obj\\"
+                "\\obj\\",
+                "\\packages\\"
             });
         }
 

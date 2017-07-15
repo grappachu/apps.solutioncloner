@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Grappachu.SolutionCloner.Engine.Components
+namespace Grappachu.SolutionCloner.Engine.Interfaces
 {
     internal interface IFileUpdater
     {

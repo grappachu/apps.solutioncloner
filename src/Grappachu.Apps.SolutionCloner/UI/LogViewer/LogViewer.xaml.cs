@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Grappachu.SolutionCloner.Properties;
 using log4net;
 using log4net.Appender;
@@ -93,23 +94,40 @@ namespace Grappachu.SolutionCloner.UI.LogViewer
             DetachLogger();
         }
 
+        private bool _isAppenderAttached;
+        private readonly object _isAppenderAttachedLock = new object();
+
         private void AttachLogger()
         {
-            _appender = new LogViewAppender(List);
-            BasicConfigurator.Configure(_appender);
-            _appender.Threshold = _displayLevel;
-            _appender.MaxItems = MaxItems;
-            _appender.ActivateOptions();
+            lock (_isAppenderAttachedLock)
+            {
+                if (!_isAppenderAttached)
+                {
+                    _appender = new LogViewAppender(List);
+                    BasicConfigurator.Configure(_appender);
+                    _appender.Threshold = _displayLevel;
+                    _appender.MaxItems = MaxItems;
+                    _appender.ActivateOptions();
+                    _isAppenderAttached = true;
+                }
+            }
         }
 
         private void DetachLogger()
         {
-            var root = ((Hierarchy)LogManager.GetRepository()).Root;
-            var attachable = (IAppenderAttachable)root;
-            if (attachable != null)
+            lock (_isAppenderAttachedLock)
             {
-                attachable.RemoveAppender(_appender);
-                _appender.Close();
+                if (!_isAppenderAttached)
+                {
+                    var root = ((Hierarchy)LogManager.GetRepository()).Root;
+                    var attachable = (IAppenderAttachable)root;
+                    if (attachable != null)
+                    {
+                        attachable.RemoveAppender(_appender);
+                        _appender.Close();
+                    }
+                    _isAppenderAttached = false;
+                }
             }
         }
 
@@ -127,10 +145,7 @@ namespace Grappachu.SolutionCloner.UI.LogViewer
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private class LogViewAppender : AppenderSkeleton
@@ -160,7 +175,7 @@ namespace Grappachu.SolutionCloner.UI.LogViewer
 
                     if (!_lstLog.Dispatcher.CheckAccess())
                     {
-                        _lstLog.Dispatcher.BeginInvoke(new Action(() => Append(loggingEvent)));
+                         _lstLog.Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => Append(loggingEvent)));
                     }
                     else
                     {
