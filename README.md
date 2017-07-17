@@ -2,6 +2,9 @@
 A simple tool to create a new VisualStudio project by cloning an existing one
 
 #Changelog
+2017-07-17
+- Added: Namespace scanner (when selecting source folder the scanner looks for basic namespace to replace)
+
 2017-07-15
 
 - Added: Spin wait progressbar

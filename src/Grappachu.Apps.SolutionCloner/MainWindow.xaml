@@ -17,11 +17,11 @@
             <StackPanel  >
                 <TextBlock>Source Folder</TextBlock>
                 <pathSelector:PathSelector x:Name="TxtSource" DirectoryMode="True"  Margin="5,0"  HorizontalAlignment="Stretch" 
-                                           BrowseButtonVisible="True" 
+                                           BrowseButtonVisible="True"  PropertyChanged="TxtSource_OnPropertyChanged"
                                            WatermarkText="Choose a folder to clone from..." />
                 <TextBlock>Target Folder</TextBlock>
                 <pathSelector:PathSelector x:Name="TxtTarget" DirectoryMode="True"  Margin="5,0" HorizontalAlignment="Stretch" 
-                                             BrowseButtonVisible="True" 
+                                             BrowseButtonVisible="True"   
                                            WatermarkText="Choose where to save cloned files..." />
                 <TextBlock>Original Name</TextBlock>
                 <xctk:WatermarkTextBox x:Name="TxtOriginalKey" Watermark="Old.Namespace.Here" Margin="5" />

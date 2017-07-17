@@ -152,7 +152,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Engine\Model\CloneProfile.cs" />
+    <Compile Include="Engine\Components\Scanner\ProjectInfo.cs" />
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Engine\Components\Scanner\SolutionFile.cs" />
+    <Compile Include="Engine\Components\Scanner\SolutionScanner.cs" />
     <Compile Include="UI\LogViewer\LogViewer.xaml.cs">
       <DependentUpon>LogViewer.xaml</DependentUpon>
     </Compile>
@@ -231,5 +234,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

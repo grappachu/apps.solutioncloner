@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Deployment.Application;
 using System.IO;
 using System.Linq;
@@ -10,6 +11,7 @@ using System.Windows.Input;
 using Grappachu.Core.Lang.Extensions;
 using Grappachu.Core.Preview.UI;
 using Grappachu.SolutionCloner.Engine.Components;
+using Grappachu.SolutionCloner.Engine.Components.Scanner;
 using Grappachu.SolutionCloner.Engine.Interfaces;
 using Grappachu.SolutionCloner.Engine.Model;
 using Grappachu.SolutionCloner.Properties;
@@ -22,8 +24,11 @@ namespace Grappachu.SolutionCloner
     /// </summary>
     public partial class MainWindow
     {
+        private readonly SolutionScanner _scanner;
+
         public MainWindow()
         {
+            _scanner = new SolutionScanner();
             InitializeComponent();
         }
 
@@ -83,10 +88,7 @@ namespace Grappachu.SolutionCloner
                 SetWaiting(true);
                 new TaskFactory()
                     .StartNew(() => builder.Clone(pars))
-                    .ContinueWith(t =>
-                    {
-                        Dispatcher.BeginInvoke(new Action(() => { SetWaiting(false); }));
-                    });
+                    .ContinueWith(t => { Dispatcher.BeginInvoke(new Action(() => { SetWaiting(false); })); });
 
                 // Dispatcher.BeginInvoke(new Action(() => { builder.Clone(pars); }));
 
@@ -120,6 +122,33 @@ namespace Grappachu.SolutionCloner
         private static IList<string> Parse(string text)
         {
             return text.Split().Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+        }
+
+        private void TxtSource_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(TxtSource.SelectedValue))
+            {
+                OnSuggestReplacements(TxtSource.SelectedValue);
+            }
+        }
+
+
+        private void OnSuggestReplacements(string sourcePath)
+        {
+            if (string.IsNullOrWhiteSpace(TxtOriginalKey.Text))
+            {
+                var solutionFiles = _scanner.FindAll(sourcePath).ToArray();
+                if (solutionFiles.Any())
+                {
+                    var solution = solutionFiles.First();
+                    var proj = solution.GetProjects().FirstOrDefault();
+                    if (proj != null)
+                    {
+                        var ns = proj.GetNamespace();
+                        TxtOriginalKey.Text = ns;
+                    }
+                }
+            }
         }
     }
 }
