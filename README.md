@@ -2,6 +2,8 @@
 A simple tool to create a new VisualStudio project by cloning an existing one
 
 #Changelog
+- Added: Button to create directory in browse destination dialog 
+
 2017-07-17
 - Added: Namespace scanner (when selecting source folder the scanner looks for basic namespace to replace)
 
