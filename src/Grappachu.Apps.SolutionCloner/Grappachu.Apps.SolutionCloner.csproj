@@ -25,12 +25,11 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>http://software.prenassi.it/SolutionCloner/</InstallUrl>
-    <UpdateUrl>http://localhost/SolutionCloner/</UpdateUrl>
+    <UpdateUrl>http://software.prenassi.it/SolutionCloner/</UpdateUrl>
     <ProductName>Grappachu Solution Cloner</ProductName>
     <PublisherName>Davide Prenassi</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <AutorunEnabled>true</AutorunEnabled>
     <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>0.5.0.%2a</ApplicationVersion>
     <UseApplicationTrust>true</UseApplicationTrust>
