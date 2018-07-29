@@ -1,17 +1,24 @@
-# apps.solutioncloner
-A simple tool to create a new VisualStudio project by cloning an existing one
+# Grappachu Solution Cloner
 
-#Changelog
-- Added: Button to create directory in browse destination dialog 
+**Solution Cloner** is a simple tool designed to help you creating a new VisualStudio solution by cloning an existing one.
 
-2017-07-17
-- Added: Namespace scanner (when selecting source folder the scanner looks for basic namespace to replace)
+By using this tool you can create, from an existing solution (tested with c#, wpf, winforms and MVC projects), a new cloned one with namespaces, dicrectories and filenames modified.
 
-2017-07-15
 
-- Added: Spin wait progressbar
-- Changed: Default file list and excluded paths
-- Changed: Size of main window
-- Changed: Improved responsivness of log box
-- Fixed: Crash when destination root contains original namespace
-- Fixed: Ignored blank rows in text fields
+## Installing / Getting started
+
+To run the tool you only need the following pre-requisite
+
+- Microsoft .NET Framework 4.5.2
+
+You can just compile sources or get the **latest ClickOnce build**
+
+- [http://software.prenassi.it/SolutionCloner/SolutionCloner.application](http://software.prenassi.it/SolutionCloner/SolutionCloner.application)
+
+
+## More about Solution Cloner
+
+More info are available on this Wiki
+
+- [Screenshots](https://github.com/grappachu/apps.solutioncloner/wiki/Screenshots)
+- [Change Log](https://github.com/grappachu/apps.solutioncloner/wiki/Change-Log)
