@@ -31,8 +31,8 @@
     <SuiteName>Solution Cloner</SuiteName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>0.5.1.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>0.6.0.%2a</ApplicationVersion>
     <UseApplicationTrust>true</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <ExcludeDeploymentUrl>true</ExcludeDeploymentUrl>
@@ -94,8 +94,8 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Grappachu.Core, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\Packages\Grappachu.Core.2.1.0\lib\net452\Grappachu.Core.dll</HintPath>
+    <Reference Include="Grappachu.Core, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\Packages\Grappachu.Core.2.3.0\lib\net452\Grappachu.Core.dll</HintPath>
     </Reference>
     <Reference Include="Grappachu.Interop.log4net">
       <HintPath>..\..\..\..\..\Packages\Grappachu.Interop.log4net.1.0.0\lib\net452\Grappachu.Interop.log4net.dll</HintPath>
@@ -105,9 +105,13 @@
       <HintPath>..\..\..\..\..\Packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\Packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -144,19 +148,56 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Engine\Model\CloneProfile.cs" />
-    <Compile Include="Engine\Components\Scanner\ProjectInfo.cs" />
+    <Compile Include="Common\AbstractAsyncCommand.cs" />
+    <Compile Include="Common\AbstractCommand.cs" />
+    <Compile Include="Common\Dialogs\IOverlayDialogInteractiveControl.cs" />
+    <Compile Include="Common\Dialogs\IOverlayDialogPresenter.cs" />
+    <Compile Include="Common\Dialogs\OverlayDialog.xaml.cs">
+      <DependentUpon>OverlayDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Common\ObservableObject.cs" />
+    <Compile Include="Common\RelayCommand.cs" />
+    <Compile Include="Common\Utils\BoolToStringConverter.cs" />
+    <Compile Include="Common\Utils\BoolToVisibilityConverter.cs" />
+    <Compile Include="Common\Utils\DatetimeToStringConverter.cs" />
+    <Compile Include="Common\Utils\DragDrop\DragDropUtils.cs" />
+    <Compile Include="Common\Utils\DragDrop\IDragDropConfigurator.cs" />
+    <Compile Include="Common\Utils\DragDrop\IDropCallback.cs" />
+    <Compile Include="Common\Utils\DragDrop\ListViewDragDropConfigurator.cs" />
+    <Compile Include="Common\Utils\DragDrop\ListViewDropCallback.cs" />
+    <Compile Include="Common\Utils\EmptyToVisibilityConverter.cs" />
+    <Compile Include="Common\Utils\FlagsHelper.cs" />
+    <Compile Include="Common\Utils\IgnoreNewItemPlaceholderConverter.cs" />
+    <Compile Include="Common\Utils\IsNullConverter.cs" />
+    <Compile Include="Common\Utils\ListViewExtensions.cs" />
+    <Compile Include="Common\Utils\NegateBoolConverter.cs" />
+    <Compile Include="Common\Utils\IsNotNullConverter.cs" />
+    <Compile Include="Common\Utils\NullToVisibilityConverter.cs" />
+    <Compile Include="Common\Utils\ObjectToVisibilityConverter.cs" />
+    <Compile Include="Common\Utils\ThreeStateBoolConverter.cs" />
+    <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Engine\Components\Scanner\SolutionFile.cs" />
-    <Compile Include="Engine\Components\Scanner\SolutionScanner.cs" />
+    <Compile Include="ReadConfig.cs" />
+    <Compile Include="TemplateManager.cs" />
     <Compile Include="UI\LogViewer\LogViewer.xaml.cs">
       <DependentUpon>LogViewer.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\PathSelector\PathSelector.xaml.cs">
       <DependentUpon>PathSelector.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\PlaceholderEditor.xaml.cs">
+      <DependentUpon>PlaceholderEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\Util\CommonInternal\FlagsHelper.cs" />
     <Compile Include="UI\Util\CommonInternal\Screen.cs" />
+    <Page Include="Common\Dialogs\OverlayDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Common\Styles\MainStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -165,14 +206,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Engine\Components\Updaters\DefaultFileUpdater.cs" />
-    <Compile Include="Engine\Interfaces\IFileUpdater.cs" />
-    <Compile Include="Engine\Interfaces\IUpdaterFactory.cs" />
-    <Compile Include="Engine\Components\UpdaterFactory.cs" />
-    <Compile Include="Engine\Model\CloneSettings.cs" />
-    <Compile Include="Engine\Components\CloneSettingsValidator.cs" />
-    <Compile Include="Engine\Interfaces\IValidator.cs" />
-    <Compile Include="Engine\SolutionCloner.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -184,6 +217,10 @@
     <Page Include="UI\PathSelector\PathSelector.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\PlaceholderEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +248,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Resources\NugetLibrary.1.0.0.zip" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="applications.ico" />
@@ -227,6 +265,11 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Grappachu.Apps.SolutionCloner.IO\Grappachu.Apps.SolutionCloner.Engine.csproj">
+      <Project>{EEB09E0B-E289-416A-8866-032440C32EA5}</Project>
+      <Name>Grappachu.Apps.SolutionCloner.Engine</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

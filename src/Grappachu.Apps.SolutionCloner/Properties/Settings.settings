@@ -8,5 +8,8 @@
     <Setting Name="LastTargetPath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="TemplateFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">%USERPROFILE%\SolutionCloner\Templates</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

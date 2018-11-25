@@ -7,14 +7,21 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using Grappachu.Apps.SolutionCloner.Engine.Components;
+using Grappachu.Apps.SolutionCloner.Engine.Components.Scanner;
+using Grappachu.Apps.SolutionCloner.Engine.Components.Templates;
+using Grappachu.Apps.SolutionCloner.Engine.Interfaces;
+using Grappachu.Apps.SolutionCloner.Engine.Model;
+using Grappachu.Apps.SolutionCloner.Engine.Model.Templates;
+using Grappachu.Core.Collections;
 using Grappachu.Core.Lang.Extensions;
 using Grappachu.Core.Preview.UI;
-using Grappachu.SolutionCloner.Engine.Components;
-using Grappachu.SolutionCloner.Engine.Components.Scanner;
-using Grappachu.SolutionCloner.Engine.Interfaces;
-using Grappachu.SolutionCloner.Engine.Model;
+using Grappachu.SolutionCloner.Common.Dialogs;
+using Grappachu.SolutionCloner.Common.Utils.DragDrop;
 using Grappachu.SolutionCloner.Properties;
+using Grappachu.SolutionCloner.UI;
 using log4net.Core;
 
 namespace Grappachu.SolutionCloner
@@ -25,22 +32,17 @@ namespace Grappachu.SolutionCloner
     public partial class MainWindow
     {
         private readonly SolutionScanner _scanner;
-
+        private readonly ITemplateEnumerator _templateEnumerator;
         public MainWindow()
         {
             _scanner = new SolutionScanner();
+            _templateEnumerator = new TemplateEnumerator(ReadConfig.TemplateFolder);
             InitializeComponent();
         }
 
-        public string CurrentVersion
-        {
-            get
-            {
-                return ApplicationDeployment.IsNetworkDeployed
-                    ? ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString()
-                    : Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            }
-        }
+        private static string CurrentVersion => ApplicationDeployment.IsNetworkDeployed
+            ? ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString()
+            : Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -58,6 +60,9 @@ namespace Grappachu.SolutionCloner
                 EditorDeleteFiles.Text = string.Join(Environment.NewLine, defaultProfile.DeleteFiles);
                 EditorExcludeFolders.Text = string.Join(Environment.NewLine, defaultProfile.ExcludeFolders);
                 EditorReplaceFiles.Text = string.Join(Environment.NewLine, defaultProfile.ReplaceFiles);
+
+                DataContext = new MainWindowViewModel(_templateEnumerator);
+
             }
             catch (Exception ex)
             {
@@ -70,7 +75,7 @@ namespace Grappachu.SolutionCloner
             try
             {
                 LogViewer.Clear();
-                var builder = new Engine.SolutionCloner(new CloneSettingsValidator(), new UpdaterFactory<IFileUpdater>());
+                var builder = new Apps.SolutionCloner.Engine.SolutionCloner(new FileManager(), new CloneSettingsValidator(), new UpdaterFactory<IFileUpdater>());
                 var pars = new CloneSettings
                 {
                     TemplateSource = new DirectoryInfo(TxtSource.SelectedValue),
@@ -83,8 +88,40 @@ namespace Grappachu.SolutionCloner
                 pars.CloneProfile.ExcludeFolders = Parse(EditorExcludeFolders.Text);
                 pars.CloneProfile.ReplaceFiles = Parse(EditorReplaceFiles.Text);
 
-                TabLog.IsSelected = true;
+                if (VieModel.CloneFromTemplate == true)
+                {
+                    TemplateInfo template = VieModel.SelectedTemplate;
 
+                    var placeholders = GetPlaceholders(template);
+                    pars.CloneProfile.ExtraReplacements.AddRange(placeholders);
+
+                    var control = new PlaceholderEditor();
+                    control.DataContext = new PlaceholderEditorViewModel(pars.CloneProfile, () =>
+                    {
+                        var parent = control.FindAnchestor<Window>();
+                        parent.DialogResult = true;
+                        parent.Close();
+                    });
+                    var dlg = OverlayDialog.Activate("Configure parameters", control);
+                    if (dlg.DialogResult != true)
+                    {
+                        return;
+                    }
+
+                    foreach (var itemReference in template.SolutionItems)
+                    {
+                        var cr = new CloneReplacement
+                        {
+                            Placeholder = itemReference.Value,
+                            Value = Guid.NewGuid().ToString(),
+                            IgnoreCase = true
+                        };
+                        pars.CloneProfile.ExtraReplacements.Add(cr);
+                    }
+                }
+
+
+                TabLog.IsSelected = true;
                 SetWaiting(true);
                 new TaskFactory()
                     .StartNew(() => builder.Clone(pars))
@@ -101,6 +138,40 @@ namespace Grappachu.SolutionCloner
                 Dialogs.ShowError(ex);
             }
         }
+
+        private static IEnumerable<CloneReplacement> GetPlaceholders(TemplateInfo template)
+        {
+            var list = new List<CloneReplacement>();
+            foreach (var placeholder in template.Placeholders)
+            {
+                string value = string.Empty;
+                switch (placeholder.Key.ToLower())
+                {
+                    case "§{author}":
+                        value = Environment.UserName;
+                        break;
+                    case "§{today}":
+                        value = DateTime.Today.ToString("yyyy-MM-dd");
+                        break;
+                    case "§{year}":
+                        value = DateTime.Today.ToString("yyyy");
+                        break;
+                }
+
+                var cr = new CloneReplacement
+                {
+                    Placeholder = placeholder.Key,
+                    Value = value,
+                    IgnoreCase = false
+                };
+                list.Add(cr);
+            }
+
+            return list;
+        }
+
+
+        private MainWindowViewModel VieModel => DataContext as MainWindowViewModel;
 
         private void SetWaiting(bool waiting)
         {
@@ -147,6 +218,19 @@ namespace Grappachu.SolutionCloner
                         var ns = proj.GetNamespace();
                         TxtOriginalKey.Text = ns;
                     }
+                }
+            }
+        }
+
+        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataContext is MainWindowViewModel viewModel)
+            {
+                var template = viewModel.SelectedTemplate;
+                if (template != null)
+                {
+                    TxtNewKey.Text = template.Namespace;
+                    TxtSource.SelectedValue = template.GetCloneableRoot();
                 }
             }
         }

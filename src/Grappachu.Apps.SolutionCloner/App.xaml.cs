@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Deployment.Application;
+using System.Windows;
 using Grappachu.Core.Preview.UI;
 
 namespace Grappachu.SolutionCloner
@@ -10,7 +11,12 @@ namespace Grappachu.SolutionCloner
     {
         public App()
         {
-            DispatcherUnhandledException += App_DispatcherUnhandledException; 
+            if (ApplicationDeployment.IsNetworkDeployed && ApplicationDeployment.CurrentDeployment.IsFirstRun)
+            {
+                var templateManager = new TemplateManager();
+                templateManager.BuildTemplates();
+            }
+            DispatcherUnhandledException += App_DispatcherUnhandledException;
         }
 
         private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

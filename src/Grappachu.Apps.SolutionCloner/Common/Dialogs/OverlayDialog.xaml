@@ -1,0 +1,33 @@
+﻿<Window x:Class="Grappachu.SolutionCloner.Common.Dialogs.OverlayDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="OverlayDialog" Height="480" Width="800" Style="{DynamicResource OverlayDialog }"
+        WindowStartupLocation="CenterScreen" AllowsTransparency="True"
+        Loaded="OverlayDialog_OnLoaded" Closing="OverlayDialog_OnClosing">
+    <Window.Resources>
+        <ResourceDictionary Source="pack://application:,,,/Common/Styles/MainStyle.xaml" />
+    </Window.Resources>
+    <Border BorderThickness="1" BorderBrush="{StaticResource ColorSecondary}">
+        <DockPanel x:Name="Workspace" Style="{DynamicResource OverlayWorkspace }">
+
+            <Label DockPanel.Dock="Top" Style="{DynamicResource OverlayTitleBar}">
+                <Grid HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="48" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="TxtTitle" Grid.Column="0" Style="{StaticResource OverlayTitle}">Titolo</TextBlock>
+                    <Button Grid.Column="1" IsTabStop="True" TabIndex="991" Style="{StaticResource OverlayButton}"
+                            Click="BtnClose_OnClick">
+                        X
+                        <!--<Image Source="{StaticResource ImgDialogClose-Inverse}" />-->
+                    </Button>
+                </Grid>
+            </Label>
+
+        </DockPanel>
+    </Border>
+</Window>
