@@ -37,4 +37,4 @@ namespace Grappachu.SolutionCloner.Common.Utils
             return value as bool?;
         }
     }
-}
+} 

@@ -6,6 +6,7 @@
         xmlns:logViewer="clr-namespace:Grappachu.SolutionCloner.UI.LogViewer"
         xmlns:pathSelector="clr-namespace:Grappachu.SolutionCloner.UI.PathSelector"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:templates="clr-namespace:Grappachu.Apps.SolutionCloner.Engine.Model.Templates;assembly=Grappachu.Apps.SolutionCloner.Engine"
         mc:Ignorable="d" 
         Title="Grappachu Solution Cloner" Height="640" Width="640" Loaded="MainWindow_OnLoaded"
         d:DataContext="{d:DesignData MainWindowViewModel}">
@@ -21,10 +22,18 @@
             <StackPanel  >
 
                 <CheckBox IsChecked="{Binding CloneFromTemplate}">Clone project from an existing template</CheckBox>
-                <ComboBox ItemsSource="{Binding AvailableTemplates, Mode=OneWay}" SelectedItem="{Binding SelectedTemplate}"
+                <ComboBox ItemsSource="{Binding AvailableTemplates, Mode=OneWay}" 
+                          SelectedItem="{Binding SelectedTemplate}"
                           IsEnabled="{Binding CloneFromTemplate,Converter={StaticResource IsCheckedConverter}, Mode=OneWay}" 
                           SelectionChanged="Selector_OnSelectionChanged"
-                          Margin="5,5,5,0" HorizontalAlignment="Stretch" />
+                          Margin="5,5,5,0" HorizontalAlignment="Stretch" >
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate DataType="templates:TemplateInfo">
+                                <TextBlock Text="{Binding Converter={StaticResource TemplateLabelConverter}}" 
+                                           ToolTip="{Binding Description}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                </ComboBox>
 
                 <TextBlock>Or from a folder on disk</TextBlock>
                 <pathSelector:PathSelector x:Name="TxtSource" DirectoryMode="True"  Margin="5,0"  HorizontalAlignment="Stretch" 

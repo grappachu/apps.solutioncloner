@@ -11,11 +11,14 @@ namespace Grappachu.SolutionCloner
     {
         public App()
         {
-            if (ApplicationDeployment.IsNetworkDeployed && ApplicationDeployment.CurrentDeployment.IsFirstRun)
+#if !DEBUG
+ if (ApplicationDeployment.IsNetworkDeployed && ApplicationDeployment.CurrentDeployment.IsFirstRun) 
+#endif
             {
                 var templateManager = new TemplateManager();
                 templateManager.BuildTemplates();
             }
+
             DispatcherUnhandledException += App_DispatcherUnhandledException;
         }
 

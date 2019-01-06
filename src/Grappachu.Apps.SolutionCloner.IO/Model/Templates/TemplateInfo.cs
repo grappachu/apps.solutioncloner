@@ -8,6 +8,7 @@ namespace Grappachu.Apps.SolutionCloner.Engine.Model.Templates
         public string Name { get; set; }
         public string Version { get; set; }
         public Author Author { get; set; }
+        public string Description { get; set; }
         public string Namespace { get; set; }
         public List<Placeholder> Placeholders { get; set; }
         public List<SolutionItemReference> SolutionItems { get; set; }

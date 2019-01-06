@@ -26,7 +26,7 @@
     <utils:NullToVisibilityConverter x:Key="NullToChartVisibilityConverter" TrueValue="Hidden"  FalseValue="Visible" />
     <utils:DatetimeToStringConverter x:Key="LogDateConverter" FormatString="HH:mm:ss"  NullValue="n/d" />
     <utils:IgnoreNewItemPlaceholderConverter x:Key="IgnoreNewItemPlaceholderConverter"  />
-
+    <utils:TemplateLabelConverter x:Key="TemplateLabelConverter" />
 
 
     <!-- Base Elements -->

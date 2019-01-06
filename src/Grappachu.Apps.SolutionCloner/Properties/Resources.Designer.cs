@@ -69,5 +69,15 @@ namespace Grappachu.SolutionCloner.Properties {
                 return ((byte[])(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] NugetLibrary_1_0_1 {
+            get {
+                object obj = ResourceManager.GetObject("NugetLibrary_1_0_1", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

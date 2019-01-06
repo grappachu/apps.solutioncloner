@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.IO.Compression;
 using Grappachu.Core.IO;
 using Grappachu.Core.Preview.IO;
@@ -18,9 +17,25 @@ namespace Grappachu.SolutionCloner
 
         }
 
+        /// <summary>
+        /// Rebuilds the template folder by unzipping the new built-in templates and deleting the obsolete ones
+        /// </summary>
         public void BuildTemplates()
         {
-            UnzipTemplate(Resources.NugetLibrary_1_0_0, Path.Combine(_templateFolder, "NugetLibrary.1.0.0"));
+            // NuGet Library Template
+            UnzipTemplate(Resources.NugetLibrary_1_0_1, Path.Combine(_templateFolder, "NugetLibrary.1.0.1"));
+            RemoveTemplate(Resources.NugetLibrary_1_0_0, Path.Combine(_templateFolder, "NugetLibrary.1.0.0"));
+        }
+
+        /// <summary>
+        ///     Deletes the whole template folder
+        /// </summary>
+        /// <param name="targetFolder"></param>
+        private static void RemoveTemplate(byte[] templateData, string targetFolder)
+        {
+            // TODO: templateData can be used to check for user-changes in the template
+
+            FilesystemTools.SafeDelete(targetFolder, true, true);
         }
 
         /// <summary>
