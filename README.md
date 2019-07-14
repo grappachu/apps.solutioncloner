@@ -15,7 +15,7 @@ You can just compile sources or get the **latest ClickOnce build**
 
     http://software.prenassi.it/SolutionCloner/SolutionCloner.application 
 
-**<<<--- To install please copy and paste the link above into Edge or Internet Explorer (other browsers won't work) --->>>** 
+**To install copy and paste the link above into Edge or Internet Explorer (other browsers won't work)** 
 
 
 ## More about Solution Cloner
