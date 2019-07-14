@@ -19,8 +19,8 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="48" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock x:Name="TxtTitle" Grid.Column="0" Style="{StaticResource OverlayTitle}">Titolo</TextBlock>
-                    <Button Grid.Column="1" IsTabStop="True" TabIndex="991" Style="{StaticResource OverlayButton}"
+                    <TextBlock x:Name="TxtTitle" Grid.Column="0" Style="{DynamicResource OverlayTitle}">Titolo</TextBlock>
+                    <Button Grid.Column="1" IsTabStop="True" TabIndex="991" Style="{DynamicResource OverlayButton}"
                             Click="BtnClose_OnClick">
                         X
                         <!--<Image Source="{StaticResource ImgDialogClose-Inverse}" />-->

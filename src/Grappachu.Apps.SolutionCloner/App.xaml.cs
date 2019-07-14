@@ -1,6 +1,7 @@
 ﻿using System.Deployment.Application;
-using System.Windows;
+using System.Windows.Forms;
 using Grappachu.Core.Preview.UI;
+using Application = System.Windows.Application;
 
 namespace Grappachu.SolutionCloner
 {
@@ -12,7 +13,7 @@ namespace Grappachu.SolutionCloner
         public App()
         {
 #if !DEBUG
- if (ApplicationDeployment.IsNetworkDeployed && ApplicationDeployment.CurrentDeployment.IsFirstRun) 
+            if ((ApplicationDeployment.IsNetworkDeployed && ApplicationDeployment.CurrentDeployment.IsFirstRun) || Control.ModifierKeys == Keys.Shift)
 #endif
             {
                 var templateManager = new TemplateManager();
