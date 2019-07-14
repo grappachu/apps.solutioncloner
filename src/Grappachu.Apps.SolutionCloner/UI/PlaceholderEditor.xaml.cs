@@ -59,7 +59,12 @@ namespace Grappachu.SolutionCloner.UI
             {
                 Items = new ObservableCollection<ItemEditor>(
                     _parsCloneProfile.ExtraReplacements.Select(x => new ItemEditor
-                    { Key = x.Placeholder, Val = x.Value }));
+                    { 
+                        Key = x.Placeholder, 
+                        Val = x.Value,
+                        Description = x.Description,
+                        IsMandatory = x.IsMandatory
+                    }));
                 
             });
         }
@@ -82,5 +87,7 @@ namespace Grappachu.SolutionCloner.UI
     {
         public string Key { get; set; }
         public string Val { get; set; }
+        public string Description { get; set; }
+        public bool IsMandatory { get; set; }
     }
 }

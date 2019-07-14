@@ -162,7 +162,9 @@ namespace Grappachu.SolutionCloner
                 {
                     Placeholder = placeholder.Key,
                     Value = value,
-                    IgnoreCase = false
+                    IgnoreCase = false,
+                    Description = placeholder.Description,
+                    IsMandatory = placeholder.IsMandatory
                 };
                 list.Add(cr);
             }

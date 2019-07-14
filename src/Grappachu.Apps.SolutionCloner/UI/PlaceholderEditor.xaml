@@ -31,7 +31,13 @@
                   BorderBrush="{StaticResource ColorSecondary}">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Parametro" MinWidth="120" Binding="{Binding Key}" IsReadOnly="True" />
+                <DataGridTextColumn Header="Parametro" MinWidth="120" Binding="{Binding Key}" IsReadOnly="True" >
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="ToolTip" Value="{Binding Description}" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
                 <DataGridTextColumn Header="Valore" MinWidth="360" Binding="{Binding Val, Mode=TwoWay}"
                                     IsReadOnly="False" />
             </DataGrid.Columns>

@@ -14,6 +14,7 @@ namespace Grappachu.SolutionCloner
         public MainWindowViewModel(ITemplateEnumerator templateEnumerator)
         {
             _templateEnumerator = templateEnumerator;
+            CloneFromTemplate = true;
 
             InitDataAsync();
         }
