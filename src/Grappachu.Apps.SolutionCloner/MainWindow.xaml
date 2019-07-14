@@ -23,7 +23,7 @@
 
                 <CheckBox IsChecked="{Binding CloneFromTemplate}">Clone project from an existing template</CheckBox>
                 <ComboBox ItemsSource="{Binding AvailableTemplates, Mode=OneWay}" 
-                          SelectedItem="{Binding SelectedTemplate}"
+                          SelectedItem="{Binding SelectedTemplate}" ToolTip="{Binding  SelectedTemplate.Description}"
                           IsEnabled="{Binding CloneFromTemplate,Converter={StaticResource IsCheckedConverter}, Mode=OneWay}" 
                           SelectionChanged="Selector_OnSelectionChanged"
                           Margin="5,5,5,0" HorizontalAlignment="Stretch" >
@@ -34,28 +34,33 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                 </ComboBox>
-
                 <TextBlock>Or from a folder on disk</TextBlock>
                 <pathSelector:PathSelector x:Name="TxtSource" DirectoryMode="True"  Margin="5,0"  HorizontalAlignment="Stretch" 
                                            BrowseButtonVisible="True"  PropertyChanged="TxtSource_OnPropertyChanged"
-                                           WatermarkText="Choose a folder to clone from..." 
+                                           WatermarkText="Choose a folder to clone from..." ToolTip="Select the root directory you want to clone from..."
                                            IsEnabled="{Binding CloneFromTemplate, Converter={StaticResource IsCheckedReverseConverter}}"
                                            />
 
-                <TextBlock Visibility="{Binding IsOriginSelected, Converter={StaticResource BoolToCollapsedConverter}}">Target Folder</TextBlock>
+
+                <TextBlock Margin="0,5,0,0" Visibility="{Binding IsOriginSelected, Converter={StaticResource BoolToCollapsedConverter}}">Target Folder</TextBlock>
                 <pathSelector:PathSelector x:Name="TxtTarget" Visibility="{Binding IsOriginSelected, Converter={StaticResource BoolToCollapsedConverter}}"
                                            DirectoryMode="True"  Margin="5,0" HorizontalAlignment="Stretch" 
-                                             BrowseButtonVisible="True" AllowCreateFolders="True"  
+                                           BrowseButtonVisible="True" AllowCreateFolders="True"  
                                            WatermarkText="Choose where to save cloned files..." />
                 <TextBlock Visibility="{Binding IsOriginSelected, Converter={StaticResource BoolToCollapsedConverter}}">Original Name</TextBlock>
                 <xctk:WatermarkTextBox x:Name="TxtOriginalKey" Visibility="{Binding IsOriginSelected, Converter={StaticResource BoolToCollapsedConverter}}"
-                                       Watermark="Old.Namespace.Here" Margin="5" />
+                                       Watermark="Old.Namespace.Here" Margin="5" 
+                                       ToolTip="Type the namespace you want to replace. It will be replaced everywhere, even in file names so make sure contains dots and is quite long. "
+                                        />
                 <TextBlock Visibility="{Binding IsOriginSelected, Converter={StaticResource BoolToCollapsedConverter}}">New Name</TextBlock>
                 <xctk:WatermarkTextBox x:Name="TxtNewKey" Visibility="{Binding IsOriginSelected, Converter={StaticResource BoolToCollapsedConverter}}"
-                                       Watermark="New.Namespaace.Here" Margin="5" />
+                                       Watermark="New.Namespaace.Here" Margin="5" 
+                                       ToolTip="Type the new namespace to use in your project" 
+                                       />
+
                 <ProgressBar x:Name="PrgWait" IsIndeterminate="True" Margin="5,0,5,0" Height="10" Visibility="Hidden" ></ProgressBar>
                 <Button x:Name="BtnClone" Visibility="{Binding IsOriginSelected, Converter={StaticResource BoolToCollapsedConverter}}" 
-                        Margin="5" Click="BtnClone_Click">Clone</Button>
+                        Margin="5" Height="28" Click="BtnClone_Click">Clone Now!</Button>
             </StackPanel>
         </Border>
 

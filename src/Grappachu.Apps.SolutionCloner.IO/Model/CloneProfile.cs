@@ -26,7 +26,8 @@ namespace Grappachu.Apps.SolutionCloner.Engine.Model
                 ".json",
                 ".js",
                 ".css",
-                ".cshtml"
+                ".cshtml",
+                ".yml"
             });
             DeleteFiles = new List<string>(new[]
             {

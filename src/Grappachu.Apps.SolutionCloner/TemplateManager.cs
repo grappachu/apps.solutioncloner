@@ -23,8 +23,9 @@ namespace Grappachu.SolutionCloner
         public void BuildTemplates()
         {
             // NuGet Library Template
-            UnzipTemplate(Resources.NugetLibrary_1_0_1, Path.Combine(_templateFolder, "NugetLibrary.1.0.1"));
             RemoveTemplate(Resources.NugetLibrary_1_0_0, Path.Combine(_templateFolder, "NugetLibrary.1.0.0"));
+            UnzipTemplate(Resources.NugetLibrary_1_0_1, Path.Combine(_templateFolder, "NugetLibrary.1.0.1"));
+            UnzipTemplate(Resources.NugetLibrary_1_1_0, Path.Combine(_templateFolder, "NugetLibrary.1.1.0"));
         }
 
         /// <summary>

@@ -9,7 +9,7 @@ namespace Grappachu.Apps.SolutionCloner.Engine.Components
     {
         public IFileUpdater CreateUpdater(FileInfo file, CloneSettings settings)
         {
-           return  new DefaultFileUpdater(settings);
+            return new DefaultFileUpdater(settings);
         }
     }
 }

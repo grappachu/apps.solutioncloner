@@ -53,7 +53,7 @@ namespace Grappachu.Apps.SolutionCloner.Engine.Components.Updaters
         }
 
 
-        private string RenameFile(FileInfo file, CloneSettings pars)
+        private static string RenameFile(FileInfo file, CloneSettings pars)
         {
             var fname = file.Name.Replace(pars.TemplateKey, pars.TargetKey);
 

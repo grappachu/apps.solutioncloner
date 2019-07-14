@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace Grappachu.Apps.SolutionCloner.Engine.Model
 {
@@ -19,6 +18,4 @@ namespace Grappachu.Apps.SolutionCloner.Engine.Model
 
         public CloneProfile CloneProfile { get; }
     }
-
-
 }
