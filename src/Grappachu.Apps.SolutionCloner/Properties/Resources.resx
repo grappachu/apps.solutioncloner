@@ -127,4 +127,7 @@
   <data name="NugetLibrary_1_1_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NugetLibrary.1.1.0.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="NugetLibrary_2_0_0_alpha" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NugetLibrary.2.0.0-alpha.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
